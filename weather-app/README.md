@@ -1,14 +1,18 @@
-# React + Vite
+# Weather App
 
-Requires Node.js 20.19+ (or 22.12+) to run the dev server.
+Aplicación React para consultar el clima usando la API de OpenWeather.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Características
+- Ciudad inicial por defecto con detalles completos del clima.
+- Pronóstico de 24 horas (intervalos de 3 horas) y pronóstico de 5 días.
+- Tarjetas con el clima de New York, Copenhagen y Tokyo.
+- Búsqueda de ciudades y cambio global de unidades °C/°F.
+- Modo claro/oscuro y almacenamiento del último clima consultado.
 
-Currently, two official plugins are available:
+## Requisitos
+- Node.js 20.19 o superior (o 22.12+).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Configuración
+1. Copiar `.env.example` a `.env` y agregar tu API key de OpenWeather.
+2. Instalar dependencias con `npm install`.
+3. Ejecutar el servidor de desarrollo con `npm run dev` y abrir `http://localhost:5173`.

@@ -3,9 +3,13 @@
 Aplicación de pronóstico del clima construida con React y Vite.
 
 ## Características
-- Búsqueda de clima por ciudad usando la API de OpenWeather.
-- Soporte de tema claro/oscuro usando React Context.
-- Cambio de unidades Celsius/Fahrenheit globalmente.
+- Pronóstico actual de la ciudad seleccionada (por defecto Buenos Aires).
+- Detalles de temperatura, ubicación, hora local, viento, máximas/mínimas y estado del tiempo.
+- Pronóstico para las próximas 24 horas en intervalos de 3 horas.
+- Pronóstico extendido de 5 días.
+- Resumen del clima de ciudades como New York, Copenhagen y Tokyo.
+- Búsqueda de ciudades.
+- Cambio de unidades Celsius/Fahrenheit y tema claro/oscuro usando React Context.
 - Guarda el último clima consultado para evitar fetches innecesarios.
 
 ## Requisitos

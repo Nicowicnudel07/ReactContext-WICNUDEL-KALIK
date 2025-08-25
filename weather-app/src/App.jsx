@@ -1,25 +1,32 @@
-import { useState, useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { ThemeContext } from './context/ThemeContext.jsx';
 import { UnitContext } from './context/UnitContext.jsx';
 import { WeatherContext } from './context/WeatherContext.jsx';
+import SearchBar from './components/SearchBar.jsx';
+import CurrentWeather from './components/CurrentWeather.jsx';
+import HourlyForecast from './components/HourlyForecast.jsx';
+import DailyForecast from './components/DailyForecast.jsx';
+import CitySummaries from './components/CitySummaries.jsx';
 import './App.css';
 
 function App() {
-  const [city, setCity] = useState('');
   const { theme, toggleTheme } = useContext(ThemeContext);
   const { unit, toggleUnit } = useContext(UnitContext);
-  const { weatherData, fetchWeather } = useContext(WeatherContext);
+  const { fetchWeather, lastCity } = useContext(WeatherContext);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!city) return;
-    try {
-      await fetchWeather(city, unit === 'celsius' ? 'metric' : 'imperial');
-    } catch (err) {
+  const units = unit === 'celsius' ? 'metric' : 'imperial';
+  const defaultCity = 'Buenos Aires';
+
+  useEffect(() => {
+    const city = lastCity || defaultCity;
+    fetchWeather(city, units).catch(console.error);
+  }, [unit, lastCity, units, fetchWeather]);
+
+  const handleSearch = (city) =>
+    fetchWeather(city, units).catch((err) => {
       console.error(err);
       alert('City not found');
-    }
-  };
+    });
 
   return (
     <div className={`app ${theme}`}>
@@ -31,28 +38,11 @@ function App() {
         </div>
       </header>
 
-      <main>
-        <form onSubmit={handleSubmit}>
-          <input
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            placeholder="Enter city"
-          />
-          <button type="submit">Search</button>
-        </form>
-
-        {weatherData && weatherData.main && (
-          <div className="weather">
-            <h2>
-              {weatherData.name}, {weatherData.sys.country}
-            </h2>
-            <p className="temp">
-              {Math.round(weatherData.main.temp)}° {unit === 'celsius' ? 'C' : 'F'}
-            </p>
-            <p className="description">{weatherData.weather[0].description}</p>
-          </div>
-        )}
-      </main>
+      <SearchBar onSearch={handleSearch} />
+      <CurrentWeather />
+      <HourlyForecast />
+      <DailyForecast />
+      <CitySummaries onSelect={handleSearch} />
     </div>
   );
 }

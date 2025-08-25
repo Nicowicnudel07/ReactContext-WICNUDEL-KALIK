@@ -5,6 +5,7 @@
   align-items: center;
   padding: 2rem;
   transition: background 0.3s, color 0.3s;
+  font-family: sans-serif;
 }
 
 .app.light {
@@ -19,7 +20,7 @@
 
 header {
   width: 100%;
-  max-width: 600px;
+  max-width: 900px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -29,27 +30,55 @@ header {
   margin-left: 0.5rem;
 }
 
-form {
-  margin-top: 2rem;
+.search {
+  margin-top: 1.5rem;
   display: flex;
   gap: 0.5rem;
 }
 
-form input {
+.search input {
   padding: 0.5rem;
   font-size: 1rem;
 }
 
-.weather {
+.current-weather {
   margin-top: 2rem;
   text-align: center;
 }
 
-.temp {
+.current-weather .temp {
   font-size: 3rem;
-  margin: 0;
 }
 
-.description {
-  text-transform: capitalize;
+.hourly, .daily, .cities {
+  width: 100%;
+  max-width: 900px;
+  margin-top: 2rem;
+}
+
+.hourly-grid, .daily-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 1rem;
+}
+
+.hour {
+  text-align: center;
+}
+
+.day {
+  text-align: center;
+}
+
+.cities {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.city-summary {
+  border: 1px solid currentColor;
+  padding: 1rem;
+  cursor: pointer;
+  text-align: center;
 }
