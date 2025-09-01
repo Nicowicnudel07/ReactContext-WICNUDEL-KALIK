@@ -150,7 +150,8 @@ body {
 }
 
 .theme-toggle,
-.unit-toggle {
+.unit-toggle,
+.location-toggle {
   background: var(--dark-card);
   border: 1px solid var(--dark-border);
   border-radius: 50%;
@@ -168,7 +169,8 @@ body {
 }
 
 .app.light .theme-toggle,
-.app.light .unit-toggle {
+.app.light .unit-toggle,
+.app.light .location-toggle {
   background: var(--light-card);
   border: 1px solid var(--light-border);
   box-shadow: var(--light-shadow);
@@ -176,14 +178,26 @@ body {
 }
 
 .theme-toggle:hover,
-.unit-toggle:hover {
+.unit-toggle:hover,
+.location-toggle:hover {
   transform: scale(1.1);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
 }
 
 .app.light .theme-toggle:hover,
-.app.light .unit-toggle:hover {
+.app.light .unit-toggle:hover,
+.app.light .location-toggle:hover {
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.location-toggle:active {
+  background: var(--dark-progress);
+  color: white;
+}
+
+.app.light .location-toggle:active {
+  background: var(--light-progress);
+  color: white;
 }
 
 /* Contenido principal */
@@ -479,10 +493,16 @@ body {
 .city-card:hover {
   background: rgba(255, 255, 255, 0.1);
   transform: translateX(5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
 }
 
 .app.light .city-card:hover {
   background: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.city-card:active {
+  transform: translateX(5px) scale(0.98);
 }
 
 .city-info-left {
