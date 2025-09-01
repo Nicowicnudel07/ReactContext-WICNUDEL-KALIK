@@ -104,7 +104,7 @@ function App() {
     if (!weatherData) {
       loadDefaultCity();
     }
-  }, []); // Solo se ejecuta una vez al montar el componente
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps -- Solo se ejecuta una vez al montar el componente
 
 
 
