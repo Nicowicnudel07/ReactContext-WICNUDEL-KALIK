@@ -4,7 +4,6 @@ import { createContext, useState } from 'react';
 export const WeatherContext = createContext();
 
 export const WeatherProvider = ({ children }) => {
-  const [lastCity, setLastCity] = useState('');
   const [weatherData, setWeatherData] = useState(null);
   const [hourlyForecast, setHourlyForecast] = useState([]);
   const [fiveDayForecast, setFiveDayForecast] = useState([]);
@@ -14,8 +13,8 @@ export const WeatherProvider = ({ children }) => {
       // Obtener clima actual
       const currentUrl = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${import.meta.env.VITE_OPENWEATHER_KEY}&units=${units}`;
       const currentRes = await fetch(currentUrl);
-      if (!currentRes.ok) throw new Error('City not found');
       const currentData = await currentRes.json();
+      if (!currentRes.ok) throw new Error(currentData.message || 'Error fetching weather data');
       
       // Obtener pronóstico de 5 días
       const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(city)}&appid=${import.meta.env.VITE_OPENWEATHER_KEY}&units=${units}`;
@@ -48,7 +47,6 @@ export const WeatherProvider = ({ children }) => {
         setFiveDayForecast(daily);
       }
       
-      setLastCity(city);
       setWeatherData(currentData);
       return currentData;
     } catch (error) {
@@ -62,8 +60,8 @@ export const WeatherProvider = ({ children }) => {
       // Obtener clima actual por coordenadas
       const currentUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${import.meta.env.VITE_OPENWEATHER_KEY}&units=${units}`;
       const currentRes = await fetch(currentUrl);
-      if (!currentRes.ok) throw new Error('Weather data not found');
       const currentData = await currentRes.json();
+      if (!currentRes.ok) throw new Error(currentData.message || 'Weather data not found');
       
       // Obtener pronóstico de 5 días por coordenadas
       const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${import.meta.env.VITE_OPENWEATHER_KEY}&units=${units}`;
@@ -96,7 +94,6 @@ export const WeatherProvider = ({ children }) => {
         setFiveDayForecast(daily);
       }
       
-      setLastCity('Mi ubicación');
       setWeatherData(currentData);
       return currentData;
     } catch (error) {

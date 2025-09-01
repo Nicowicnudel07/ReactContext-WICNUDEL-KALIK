@@ -24,7 +24,7 @@ function App() {
       setCity(cityName);
     } catch (err) {
       console.error('Error loading city:', err);
-      alert('City not found');
+      alert(err.message || 'City not found');
     }
   };
 
@@ -37,7 +37,7 @@ function App() {
       setSearchCity('');
     } catch (err) {
       console.error(err);
-      alert('City not found');
+      alert(err.message || 'City not found');
     }
   };
 
