@@ -9,7 +9,7 @@ function App() {
   const [searchCity, setSearchCity] = useState('');
   const { theme, toggleTheme } = useContext(ThemeContext);
   const { unit, toggleUnit } = useContext(UnitContext);
-  const { weatherData, fetchWeather, hourlyForecast, fiveDayForecast } = useContext(WeatherContext);
+  const { weatherData, fetchWeather, fetchWeatherByCoords, hourlyForecast, fiveDayForecast } = useContext(WeatherContext);
 
   // Datos de ejemplo para otras ciudades (estos se mantienen como ejemplo)
   const otherCities = [
@@ -17,6 +17,16 @@ function App() {
     { country: 'Denmark', city: 'Copenhagen', condition: 'Snow', icon: '❄️', temp: 0 },
     { country: 'Vietnam', city: 'Ho Chi Minh City', condition: 'Thunderstorm', icon: '⛈️', temp: 28 }
   ];
+
+  const handleCityClick = async (cityName) => {
+    try {
+      await fetchWeather(cityName, unit === 'celsius' ? 'metric' : 'imperial');
+      setCity(cityName);
+    } catch (err) {
+      console.error('Error loading city:', err);
+      alert('City not found');
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,6 +50,41 @@ function App() {
         await fetchWeather(city, newUnit === 'celsius' ? 'metric' : 'imperial');
       } catch (err) {
         console.error('Error updating units:', err);
+      }
+    }
+  };
+
+  const handleLocationClick = async () => {
+    if (!navigator.geolocation) {
+      alert('Geolocalización no está soportada en tu navegador');
+      return;
+    }
+
+    try {
+      // Mostrar indicador de carga
+      const position = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 60000
+        });
+      });
+
+      const { latitude, longitude } = position.coords;
+      
+      // Obtener el clima usando coordenadas
+      await fetchWeatherByCoords(latitude, longitude, unit === 'celsius' ? 'metric' : 'imperial');
+      setCity('Mi ubicación');
+    } catch (err) {
+      console.error('Error getting location:', err);
+      if (err.code === 1) {
+        alert('Permiso denegado para acceder a la ubicación');
+      } else if (err.code === 2) {
+        alert('Ubicación no disponible');
+      } else if (err.code === 3) {
+        alert('Tiempo de espera agotado para obtener la ubicación');
+      } else {
+        alert('Error al obtener tu ubicación');
       }
     }
   };
@@ -107,6 +152,9 @@ function App() {
         </div>
         
         <div className="header-controls">
+          <button onClick={handleLocationClick} className="location-toggle" title="Mi ubicación actual">
+            📍
+          </button>
           <button onClick={toggleTheme} className="theme-toggle">
             {theme === 'light' ? '🌙' : '☀️'}
           </button>
@@ -192,19 +240,24 @@ function App() {
           <div className="other-cities">
             <h3 className="section-title">Other large cities</h3>
             <div className="cities-list">
-              {otherCities.map((cityData, index) => (
-                <div key={index} className="city-card">
-                  <div className="city-info-left">
-                    <div className="city-country">{cityData.country}</div>
-                    <div className="city-name">{cityData.city}</div>
-                    <div className="city-condition">{cityData.condition}</div>
-                  </div>
-                  <div className="city-info-right">
-                    <div className="city-icon">{cityData.icon}</div>
-                    <div className="city-temp">{cityData.temp}°</div>
-                  </div>
-                </div>
-              ))}
+                             {otherCities.map((cityData, index) => (
+                 <div 
+                   key={index} 
+                   className="city-card"
+                   onClick={() => handleCityClick(cityData.city)}
+                   style={{ cursor: 'pointer' }}
+                 >
+                   <div className="city-info-left">
+                     <div className="city-country">{cityData.country}</div>
+                     <div className="city-name">{cityData.city}</div>
+                     <div className="city-condition">{cityData.condition}</div>
+                   </div>
+                   <div className="city-info-right">
+                     <div className="city-icon">{cityData.icon}</div>
+                     <div className="city-temp">{cityData.temp}°</div>
+                   </div>
+                 </div>
+               ))}
             </div>
           </div>
 
